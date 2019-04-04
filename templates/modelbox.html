@@ -112,9 +112,7 @@
 
 <!--<div style="position: fixed; left: 300px; width: 800px;">-->
 <div style="position: absolute; left: 300px; width: 800px;">
-
     <div class="ibox-content">
-
         <table class="table">
             <thead>
             <tr>
@@ -123,7 +121,7 @@
                 <th>性别</th>
                 <th>年龄</th>
                 <th>邮箱</th>
-                <th>密码</th>
+                <th>动作</th>
             </tr>
             </thead>
 
@@ -135,7 +133,9 @@
                     <td>{{ row.gender }}</td>
                     <td>{{ row.age }}</td>
                     <td>{{ row.email }}</td>
-                    <td>{{ row.password }}</td>
+                    <td>
+                        <a href="/detail-{{ row.id }}.html">查看详细</a>
+                    </td>
                 </tr>
             {% endfor %}
 
@@ -145,6 +145,8 @@
     </div>
 </div>
 </div>
+
+
 
 
 <!--
