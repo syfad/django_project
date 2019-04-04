@@ -9,12 +9,6 @@ from django.shortcuts import redirect
 import pymysql
 
 def login(request):
-    #包含用户提交的信息
-    # f = open('templates/login.html')
-    # data = f.read()
-    # f.close()
-    # return HttpResponse(data)
-    #获取用户提交方法
     error_msg = ''
     if request.method == "POST":
         #获取用户通过post提交过来的数据
@@ -30,7 +24,6 @@ def login(request):
 
 def register(request):
     return render(request, 'register.html')
-
 
 def home(request):
     USER_LIST = [
@@ -61,7 +54,6 @@ def modelbox(request):
     #print(data)
     db.close()
     return render(request, 'modelbox.html', {'data_list': data})
-
 
 #查看详细：
 def detail(request, uid):
