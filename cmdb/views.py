@@ -67,5 +67,12 @@ def detail(request, uid):
     db.close()
     return render(request, 'detail.html', {'list': data})
 
-def index(request):
+def index(request, uid, nid):
+    print(uid, nid)
+    print(request.path_info)
+
+    from django.urls import reverse
+    #v = reverse('indexx', args=(90,88,))
+    v = reverse('indexx', args={"nid":1, 'uid': '99'})
+    print(v)
     return HttpResponse('<h1>welcome to CMDB pages</h1>')

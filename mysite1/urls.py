@@ -14,17 +14,38 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, re_path
+from django.urls import path, re_path, include
 from cmdb import views
+from django.conf import settings
+
+
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('login/', views.login),
-    path('home/', views.home),
-    path('modelbox/', views.modelbox),
-    #path('detail/', views.detail),
-
-    re_path(r'detail-(\d+).html', views.detail),
-    path('index/', views.index),
-    path('register/', views.register),
+    re_path(r'^cmdb/', include("cmdb.urls")),
+    re_path(r'^monitor/', include("app02.urls")),
 ]
+
+
+# urlpatterns = [
+#     path('admin/', admin.site.urls),
+#     path('login/', views.login),
+#     path('home/', views.home),
+#     path('modelbox/', views.modelbox),
+#     #path('detail/', views.detail),
+#
+#     re_path(r'detail-(\d+).html', views.detail),
+#     path('index/', views.index),
+#     path('register/', views.register),
+#
+#     #re_path(r'^detail-(?P<nid>\d+)-(?P<uid>\d+).html', views.index),
+#
+#     re_path(r'^asdfsdf/(\d+)/(\d+)', views.index, name='indexx'),
+#     re_path(r'^asdfsdf/(?P<nid>\d+)/(?P<uid>\d+)', views.index, name='indexx'),
+#
+#
+#     #re_path(r'^asdsafd/', views.index, name='index')
+# ]
+
+
+
+

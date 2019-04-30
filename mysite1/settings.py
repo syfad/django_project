@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import os.path
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -37,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'app02',
 ]
 
 MIDDLEWARE = [
@@ -104,6 +106,15 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# TEMPLATE_DIRS = (
+#     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
+#     # Always use forward slashes, even on Windows.
+#     # Don't forget to use absolute paths, not relative paths.
+#     # '/data/python/django/mysite/template'
+#     os.path.join(os.path.dirname(__file__), '../template').replace('\\','/'),
+#     #这个例子使用了神奇的 Python 内部变量 __file__ ，该变量被自动设置为代码所在的 Python 模块文件名。 `` os.path.dirname(__file__)`` 将会获取自身所在的文件，即settings.py 所在的目录，然后由os.path.join 这个方法将这目录与 templates 进行连接。如果在windows下，它会智能地选择正确的后向斜杠”“进行连接，而不是前向斜杠”/”。
+# )
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
@@ -123,6 +134,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+HERE = os.path.dirname(os.path.abspath(__file__))
+HERE = os.path.join(HERE, '../')
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(HERE, 'static'),
 )
+
+
+#STATIC_PATH= os.path.join(os.path.dirname(__file__), '../static').replace('\\','/')
