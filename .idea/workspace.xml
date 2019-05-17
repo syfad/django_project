@@ -207,10 +207,10 @@
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths />
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-1366" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-1920" />
     <option name="y" value="-157" />
-    <option name="width" value="1366" />
+    <option name="width" value="1920" />
     <option name="height" value="1057" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -385,7 +385,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.087326944" side_tool="true" visible="true" weight="0.28958333" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.91267306" visible="true" weight="0.28958333" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.91267306" weight="0.28958333" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Python Console" order="7" />
       <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.73003197" weight="0.51145834" />
