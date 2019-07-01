@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .hide {
+            display: none;
+        }
+
+        .c1 {
+            position: fixed;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background-color: black;
+            opacity: 0.6;
+            z-index: 9;
+        }
+
+        .c2 {
+            width: 500px;
+            height: 300px;
+            background-color: white;
+            position: fixed;
+            left: 50%;
+            right: 50%;
+            margin-left: -250px;
+            margin-top: -50px;
+            z-index: 10;
+        }
+
+        .item .header {
+            background-color: #0a6aa1;
+            height: 60px;
+            color: white;
+            text-align: center;
+            line-height: 35px;
+            font-family: 微软雅黑, serif;
+            border: 2px #DDDDDD solid;
+        }
+
+        .body {
+            height: 30px;
+            background-color: darkgrey;
+            text-align: center;
+            border: 0.5px #DDDDDD solid;
+        }
+
+    </style>
+</head>
+<body>
+
+<!--<div style="position: fixed; left: 0; right: 0; top: 0; background-color: #0a6aa1; height: 40px">-->
+<!--两种写法，产生效果不同-->
+<div style="position: absolute; left: 0; right: 0; top: 0; background-color: #0a6aa1; height: 40px">
+    <div style="width: 980px; margin: auto; color: white; line-height: 40px">
+        <a>管理后台demo</a>
+        <a style="float: right; margin-right: 15px">登录</a>
+        <a style="float: right; margin-right: 15px;">注册</a>
+    </div>
+</div>
+
+
+<div style="margin-top: 80px; height: 50px; width: 200px">
+    <div class="item">
+        <div id="i1" class="header" onclick="changeMenu('i1');">用户管理</div>
+        <div class="content">
+            <div class="body"><a href="/monitor/user_info/">用户列表</a></div>
+            <div class="body">内容2</div>
+            <div class="body">内容3</div>
+        </div>
+    </div>
+
+
+    <div class="item">
+        <div id="i2" class="header" onclick="changeMenu('i2');">资产管理</div>
+        <div class="content hide">
+            <div class="body">内容1</div>
+            <div class="body">内容2</div>
+            <div class="body">内容3</div>
+        </div>
+    </div>
+
+
+    <div class="item">
+        <div id="i3" class="header" onclick="changeMenu('i3');">权限管理</div>
+        <div class="content hide">
+            <div class="body">内容1</div>
+            <div class="body">内容2</div>
+            <div class="body">内容3</div>
+        </div>
+    </div>
+
+    <div class="item">
+        <div id="i4" class="header" onclick="changeMenu('i4');">会话管理</div>
+        <div class="content hide">
+            <div class="body">内容1</div>
+            <div class="body">内容2</div>
+            <div class="body">内容3</div>
+        </div>
+    </div>
+</div>
+
+
+<div style="position: absolute; left: 300px; width: 800px;">
+    <h1>编辑用户</h1>
+    <form method="post" action="/monitor/useredit-{{ obj.id }}">
+        <input style="display: none" type="text" name="id" value="{{ obj.id }}">
+        <input type="text" name="username" value="{{ obj.username }}">
+        <input type="text" name="password" value="{{ obj.password }}">
+{#        <input type="text" name="password" value="{{ obj.email }}">#}
+        <input type="submit" name="提交">
+    </form>
+
+</div>
+
+
+
+<!--<div style="position: fixed; left: 300px; width: 800px;">-->
+{#<div style="position: absolute; left: 300px; width: 800px;">#}
+{#    <table>#}
+{#        <thead>#}
+{#        <tr>#}
+{#            <th><input type="button" value="全选" onclick="chooseAll()"></th>#}
+{#            <th>名称</th>#}
+{#            <th>用户名</th>#}
+{#            <th>用户组</th>#}
+{#            <th>动作</th>#}
+{#        </tr>#}
+{##}
+{#        </thead>#}
+{##}
+{#        <tbody id="tb1">#}
+{#        <tr>#}
+{#            <td><input type="checkbox"></td>#}
+{#            <td>admin</td>#}
+{#            <td>管理员</td>#}
+{#            <td>User</td>#}
+{#            <td><input type="button" value="编辑" onclick="ShowModel()"></td>#}
+{#        </tr>#}
+{#        <tr>#}
+{#            <td><input type="checkbox"></td>#}
+{#            <td>张三</td>#}
+{#            <td>zhangsan</td>#}
+{#            <td>User</td>#}
+{#            <td><input type="button" value="编辑" onclick="ShowModel()"></td>#}
+{#        </tr>#}
+{#        <tr>#}
+{#            <td><input type="checkbox"></td>#}
+{#            <td>李四</td>#}
+{#            <td>lisi</td>#}
+{#            <td>User</td>#}
+{#            <td><input type="button" value="编辑" onclick="ShowModel()"></td>#}
+{#        </tr>#}
+{##}
+{#        </tbody>#}
+{#    </table>#}
+{#    <input type="button" value="反选" onclick="reverseAll()">#}
+{#    <input type="button" value="取消" onclick="cancelAll()">#}
+
+</div>
+
+<div id="h1" class="hide c1"></div>
+
+<div id="h2" class="hide c2">
+    <div style="margin-top: 50px; margin-left: 10%">
+        <p><input type="text">名称</p>
+        <p><input type="text">用户名</p>
+        <p><input type="text">用户组</p>
+        <p>
+            <input type="button" value="确认" onclick="cancelModel()">
+            <input type="button" value="取消" onclick="cancelModel()">
+        </p>
+    </div>
+</div>
+
+
+</body>
+<script>
+    function changeMenu(nid) {
+        var current_id = document.getElementById(nid);
+        var item_list = current_id.parentElement.parentElement.children;
+
+        for (var i = 0; i < item_list.length; i++) {
+            var current_item = item_list[i];
+            current_item.children[1].classList.add('hide')
+        }
+        current_id.nextElementSibling.classList.remove('hide')
+
+    }
+
+    function chooseAll() {
+        var current_tb = document.getElementById('tb1');
+        var tb_list = current_tb.children;
+        for (var i = 0; i < tb_list.length; i++) {
+            var current_tr = tb_list[i];
+            var checkbox = current_tr.children[0].children[0];
+            checkbox.checked = true;
+        }
+    }
+
+    function cancelAll() {
+        var current_tb = document.getElementById('tb1');
+        var tb_list = current_tb.children;
+        for (var i = 0; i < tb_list.length; i++) {
+            var current_tr = tb_list[i];
+            var checkbox = current_tr.children[0].children[0];
+            checkbox.checked = false;
+        }
+    }
+
+    function reverseAll() {
+        var current_tb = document.getElementById('tb1');
+        var tb_list = current_tb.children;
+        for (var i = 0; i < tb_list.length; i++) {
+            var current_tr = tb_list[i];
+            var checkbox = current_tr.children[0].children[0];
+            if (checkbox.checked) {
+                checkbox.checked = false;
+            } else {
+                checkbox.checked = true;
+            }
+        }
+    }
+
+    function ShowModel() {
+        document.getElementById('h1').classList.remove('hide');
+        document.getElementById('h2').classList.remove('hide');
+        // 获得id为i1和i2的div元素，去除hide样式
+    }
+
+    function cancelModel() {
+        document.getElementById('h1').classList.add('hide');
+        document.getElementById('h2').classList.add('hide');
+        // 获得id为i1和i2的div元素，加上hide样式
+    }
+
+
+</script>
+</html>

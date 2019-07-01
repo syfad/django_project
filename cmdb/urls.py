@@ -27,6 +27,9 @@ urlpatterns = [
     path('modelbox/', views.modelbox),
     #path('detail/', views.detail),
 
+    re_path(r'useredit-(?P<nid>\d+)', views.useredit),
+
+
     re_path(r'detail-(\d+).html', views.detail),
     path('index/', views.index),
     path('register/', views.register),
