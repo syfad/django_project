@@ -9,7 +9,7 @@ class UserInfo(models.Model):
     username = models.CharField(max_length=32)
     password=models.CharField(max_length=64)
     email = models.CharField(max_length=60)
-    age = models.IntegerField(max_length=20, default=25)
+    age = models.IntegerField(default=25)
     gender = models.CharField(max_length=20, default='男')
 
     user_type_choices = (

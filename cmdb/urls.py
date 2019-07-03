@@ -28,9 +28,12 @@ urlpatterns = [
     #path('detail/', views.detail),
 
     re_path(r'useredit-(?P<nid>\d+)', views.useredit),
-
-
     re_path(r'detail-(\d+).html', views.detail),
+    re_path(r'userdel-(?P<nid>\d+)', views.userdelete),
+
+    re_path('host/', views.host),
+
+
     path('index/', views.index),
     path('register/', views.register),
 

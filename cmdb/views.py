@@ -9,7 +9,7 @@ from django.shortcuts import redirect
 import pymysql
 
 from app02 import models
-
+from cmdb import models
 
 
 def login(request):
@@ -106,25 +106,56 @@ def useredit(request, nid):
         gender = request.POST.get('gender')
         email = request.POST.get('email')
 
-        # id = int(id)
-        # age = int(age)
+        id = int(id)
+        age = int(age)
 
         cursor = db.cursor()
-        sql = "update user set id='%s',age='%s',username='%s',password='%s',gender='%s',email='%s' where id='%s'" %(id,age,username,pwd,gender,email,nid)
+        #使用的pymysql在插入数据的时候，如果是vchar类型的，需要加入单引号，即name = "'door'"，其中还要有一个引号，对应矩阵存储，要先用str()进行转化，然后在加单引号才能成功。python里面提供了repr()函数可以自动将其加上引号
+        sql = "update user set id=%s,age=%s,username='%s',password='%s',gender='%s',email='%s' where id=%s" %(id,age,username,pwd,gender,email,nid)
         #sql = "update user set age=%s,username=%s,password=%s,gender=%s,email=%s where id=%s".format(repr(age),repr(username),repr(pwd),repr(gender),repr(email),repr(nid))
-
         print(sql)
 
         cursor.execute(sql)
         db.commit()
         cursor.close()
         db.close()
-
-
         return redirect('/cmdb/modelbox/')
 
 
 
+def userdelete(request,nid):
+    db = pymysql.connect("192.168.100.198", "django", "123456", "django")
+    cursor = db.cursor()
+    sql = "delete from user where id=%s" %nid
+    cursor.execute(sql)
+    db.commit()
+    cursor.close()
+    db.close()
+    return redirect('/cmdb/modelbox')
 
 
+
+def business(request):
+    v1 = models.Business.objects.all()
+    #返回对象
+    v2 = models.Business.objects.all().values('id','caption')
+    #返回字典
+    v3 = models.Business.objects.all().values_list('id','caption')
+    #返回元组，按索引取数据
+    return render(request, 'index.html', {'v1':v1})
+
+def host(request):
+    v1 = models.Host.objects.filter(nid__gt=0)
+    for row in v1:
+        print(row.nid, row.hostname, row.ip, row.port, row.b.caption)
+
+    v2 = models.Host.objects.filter(nid__gt=0).values('nid', 'hostname', 'ip', 'port', 'b__caption', 'b_id')
+    for row in v2:
+        print(row['nid'],row['hostname'],row['b__caption'])
+
+    v3 = models.Host.objects.filter(nid__gt=0).values_list('nid', 'hostname', 'ip', 'port', 'b__caption', 'b_id')
+    for row in v3:
+        print(row[0], row[1], row[4])
+
+    return HttpResponse('host')
 

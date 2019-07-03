@@ -116,7 +116,7 @@
     <h1>编辑信息</h1>
     {% for row in data %}
     <form method="post" action="/cmdb/useredit-{{ row.id }}">
-        <div>标签：<input type="text" name="id" value="{{ row.id }}"></div>
+        <div style="display: none">标签：<input type="text" name="id" value="{{ row.id }}"></div>
         <div>年龄：<input type="text" name="age" value="{{ row.age }}"></div>
         <div>姓名：<input type="text" name="user" value="{{ row.username }}"></div>
         <div>密码：<input type="text" name="pwd" value="{{ row.password }}"></div>
