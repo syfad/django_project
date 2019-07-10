@@ -135,6 +135,7 @@ def userdelete(request,nid):
 
 
 
+
 def business(request):
     v1 = models.Business.objects.all()
     #返回对象
@@ -159,3 +160,10 @@ def host(request):
 
     return HttpResponse('host')
 
+def app(request):
+    app_list = models.Appliaction.objects.all()
+    for row in app_list:
+        print(row.name,row.r.all())
+
+
+    return HttpResponse('app')

@@ -32,6 +32,7 @@ urlpatterns = [
     re_path(r'userdel-(?P<nid>\d+)', views.userdelete),
 
     re_path('host/', views.host),
+    re_path('app/', views.app),
 
 
     path('index/', views.index),
