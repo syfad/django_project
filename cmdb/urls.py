@@ -33,6 +33,7 @@ urlpatterns = [
 
     re_path('host/', views.host),
     re_path('app/', views.app),
+    re_path('ajax_add_app/', views.ajax_add_app),
 
 
     path('index/', views.index),

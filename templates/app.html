@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .hide {
+            display: none;
+        }
+
+        .addlink {
+            background-color: #24AA7A;
+            border-color: #24AA7A;
+            color: #ffffff;
+            font-size: 13px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+<h1>应用列表</h1>
+<table>
+    <thead>
+    <tr>
+        <td>应用名称</td>
+        <td>应用主机列表</td>
+    </tr>
+    </thead>
+    <tbody>
+    {% for app in app_list %}
+        <tr>
+            <td>
+                {{ app.name }}
+            </td>
+            <td>
+                {% for host in app.r.all %}
+                    <span> {{ host.hostname }}</span>
+                {% endfor %}
+
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<a class="addlink">添加</a>
+
+<div id="h2" class="hide c2">
+    <div style="margin-top: 50px; margin-left: 10%">
+
+        <form id="add_form" action="/cmdb/app/" method="post">
+            <input id="app_name" type="text" placeholder="应用名称" name="app_name">
+            <div>
+
+                <select id="host_list" name="host_list" multiple>
+                    {% for op in host_list %}
+                        <option value="{{ op.nid }}">{{ op.hostname }}</option>
+                    {% endfor %}
+                </select>
+
+                <div style="margin-top: 50px; margin-left: 10%">
+                    <input id="m1" type="submit" value="确认" onclick="confirmModal()">
+
+                    <input id="add_submit_ajax" type="button" value="Ajax提交">
+
+                    <input id="m2" type="button" value="取消" onclick="cancelModel()">
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+</div>
+
+
+</body>
+<script
+        src="https://code.jquery.com/jquery-1.12.4.js"
+        integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU="
+        crossorigin="anonymous">
+</script>
+
+<script>
+    $('.addlink').click(function () {
+        $('#h1, #h2').removeClass('hide');
+    })
+
+    function cancelModel() {
+        $('#h1, #h2').addClass('hide')
+    }
+
+    $('#add_submit_ajax').click(function () {
+        $.ajax({
+            url: '/cmdb/ajax_add_app/',
+            data: {'user': 123, 'hostlist': [1,2,3,4]},
+            type: "POST",
+            dataType: 'JSON',
+            traditional: true,
+            success : function(obj){
+                console.log(obj)
+            },
+            error: function () {
+
+            },
+        })
+    })
+</script>
+</html>

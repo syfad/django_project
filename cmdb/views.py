@@ -7,6 +7,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 
 import pymysql
+import json
 
 from app02 import models
 from cmdb import models
@@ -161,9 +162,24 @@ def host(request):
     return HttpResponse('host')
 
 def app(request):
-    app_list = models.Appliaction.objects.all()
-    for row in app_list:
-        print(row.name,row.r.all())
+    if request.method == "GET":
+        app_list = models.Appliaction.objects.all()
+        # for row in app_list:
+        #     print(row.name,row.r.all())
+        host_list = models.Host.objects.all()
+        return render(request, 'app.html', {'app_list': app_list, 'host_list':host_list})
+    elif request.method == "POST":
+        print(request)
+        app_name = request.POST.get('app_name')
+        host_list = request.POST.getlist('host_list')
+        #print(app_name,host_list)
 
+        obj = models.Appliaction.objects.create(name=app_name)
+        obj.r.add(*host_list)
+        return redirect('/cmdb/app')
 
-    return HttpResponse('app')
+def ajax_add_app(request):
+    ret = {'status': True, 'error': None, 'data': None}
+    print(request.POST.get('app_name'))
+    print(request.POST.getlist('hostlist'))
+    return HttpResponse(json.dumps(ret))
