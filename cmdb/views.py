@@ -5,15 +5,17 @@ from django.shortcuts import render
 from django.shortcuts import HttpResponse
 from django.shortcuts import render
 from django.shortcuts import redirect
+from utils import pagination
 
 import pymysql
 import json
 
-from app02 import models
+
 from cmdb import models
 
 
 def login(request):
+    from app02 import models
     error_msg = ''
     if request.method == "GET":
         return render(request, 'login.html')
@@ -23,7 +25,13 @@ def login(request):
         pwd = request.POST.get('pwd', None)
         obj = models.UserInfo.objects.filter(username=user,password=pwd).first()
         if obj:
-            return redirect('/cmdb/modelbox/')
+
+            res = redirect('/cmdb/modelbox/')
+
+            #设置cookie，max_age多少秒之后失效
+            res.set_cookie('username_cookie', user, max_age=600)
+
+            return res
         else:
             error_msg = "用户名密码错误"
     return render(request, 'login.html', {'error_msg': error_msg})
@@ -56,14 +64,19 @@ def home(request):
 
 
 def modelbox(request):
-    db = pymysql.connect("192.168.100.198", "django", "123456", "django")
-    # cursor = db.cursor()
-    cursor = db.cursor(pymysql.cursors.DictCursor)
-    cursor.execute("select * from user")
-    data = cursor.fetchall()
-    # print(data)
-    db.close()
-    return render(request, 'modelbox.html', {'data_list': data})
+    v = request.COOKIES.get('username_cookie')
+    if not v:
+        return redirect('/cmdb/login/')
+    else:
+
+        db = pymysql.connect("192.168.100.198", "django", "123456", "django")
+        # cursor = db.cursor()
+        cursor = db.cursor(pymysql.cursors.DictCursor)
+        cursor.execute("select * from user")
+        data = cursor.fetchall()
+        # print(data)
+        db.close()
+    return render(request, 'modelbox.html',{'data_list': data})
 
 
 # 查看详细：
@@ -161,6 +174,66 @@ def host(request):
 
     return HttpResponse('host')
 
+
+# def app(request):
+#     if request.method == "GET":
+#         app_list = models.Appliaction.objects.all()
+#         # for row in app_list:
+#         #     print(row.name,row.r.all())
+#         host_list = models.Host.objects.all()
+#         return render(request, 'app.html', {'app_list': app_list, 'host_list':host_list})
+#     elif request.method == "POST":
+#         print(request)
+#         app_name = request.POST.get('app_name')
+#         host_list = request.POST.getlist('host_list')
+#         #print(app_name,host_list)
+#
+#         obj = models.Appliaction.objects.create(name=app_name)
+#         obj.r.add(*host_list)
+#         return redirect('/cmdb/app')
+
+def ajax_add_app(request):
+    ret = {'status': True, 'error': None, 'data': None}
+    print(request.POST.get('app_name'))
+    print(request.POST.getlist('hostlist'))
+    return HttpResponse(json.dumps(ret))
+
+
+def user_list(request):
+    current_page = request.GET.get('p', 1)
+    current_page = int(current_page)
+
+    val = request.COOKIES.get('per_page_count',10)
+    val = int(val)
+    page_obj = pagination.Page(current_page,len(LIST),val)
+
+    data = LIST[page_obj.start:page_obj.end]
+
+    page_str = page_obj.page_str("/user_list/")
+
+    return render(request, 'user_list.html', {'li': data,'page_str': page_str})
+
+
+
+# def index(request):
+#
+#     v = request.COOKIES.get('username_cookie')
+#     if not v:
+#         return redirect('/cmdb/login/')
+#     return render(request,'index.html', {'current_user': v})
+
+
+#装饰器应用
+def auth(func):
+    def inner(request,*args,**kwargs):
+        v = request.COOKIES.get('username_cookie')
+        if not v:
+            return redirect('/cmdb/login/')
+        return func(request,*args,**kwargs)
+    return inner
+
+#装饰器调用
+@auth
 def app(request):
     if request.method == "GET":
         app_list = models.Appliaction.objects.all()
@@ -177,9 +250,3 @@ def app(request):
         obj = models.Appliaction.objects.create(name=app_name)
         obj.r.add(*host_list)
         return redirect('/cmdb/app')
-
-def ajax_add_app(request):
-    ret = {'status': True, 'error': None, 'data': None}
-    print(request.POST.get('app_name'))
-    print(request.POST.getlist('hostlist'))
-    return HttpResponse(json.dumps(ret))

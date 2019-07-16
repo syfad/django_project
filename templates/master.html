@@ -66,6 +66,8 @@
         <a style="font-size: 18px; color: white;">管理后台demo</a>
         <a style="float: right; margin-right: 15px; font-size: 18px; color: white;">登录</a>
         <a style="float: right; margin-right: 15px; font-size: 18px; color: white">注册</a>
+        {% block header %} {% endblock %}
+
     </div>
 </div>
 
@@ -113,10 +115,7 @@
 </body>
 
 
-{% block content %}
-
-
-{% endblock %}
+{% block content %} {% endblock %}
 
 
 
@@ -181,6 +180,6 @@
         // 获得id为i1和i2的div元素，加上hide样式
     }
 
-
+    {% block script %}{% endblock %}
 </script>
 </html>

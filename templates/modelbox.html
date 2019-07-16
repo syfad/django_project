@@ -1,7 +1,11 @@
 {% extends 'master.html' %}
 
-{% block title %} yonghu {% endblock %}
+{% block title %}用户管理{% endblock %}
 
+
+{% block header %}
+    <a style="float: right; margin-right: 15px; font-size: 18px; color: white">欢迎登录:{{ current_user }}</a>
+{% endblock %}
 
 
 {% block content %}
@@ -38,7 +42,13 @@
 
                 </tbody>
             </table>
-
+        </div>
+        <div>
+            <select onchange="ChangePageSize()">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+            </select>
         </div>
     </div>
     </div>
@@ -66,3 +76,18 @@
 
 {% endblock %}
 
+{% block script %}
+    <script
+            src="https://code.jquery.com/jquery-1.12.4.js"
+            integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU="
+            crossorigin="anonymous">
+    </script>
+    
+    <script>
+    function ChangePageSize() {
+
+    }
+    </script>
+    
+    
+{% endblock %}
