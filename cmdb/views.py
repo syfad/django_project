@@ -68,15 +68,31 @@ def modelbox(request):
     if not v:
         return redirect('/cmdb/login/')
     else:
+        current_page = request.GET.get('p', 1)
+        current_page = int(current_page)
+        val = request.COOKIES.get('per_page_count', 10)
+        val = int(val)
 
         db = pymysql.connect("192.168.100.198", "django", "123456", "django")
         # cursor = db.cursor()
         cursor = db.cursor(pymysql.cursors.DictCursor)
-        cursor.execute("select * from user")
+        cursor.execute("SELECT COUNT(*) FROM user")
+        data_count = cursor.fetchone()
+        count = data_count['COUNT(*)']
+
+        page_obj = pagination.Page(current_page, count, val)
+
+
+        cursor.execute("select * from user limit %s, %s" %(page_obj.start, page_obj.end))
+        print(page_obj.start,page_obj.end)
+
         data = cursor.fetchall()
-        # print(data)
+
+        page_str = page_obj.page_str("/cmdb/modelbox/")
+
+        cursor.close()
         db.close()
-    return render(request, 'modelbox.html',{'data_list': data})
+    return render(request, 'modelbox.html',{'data_list': data, 'page_str': page_str})
 
 
 # 查看详细：
@@ -199,21 +215,29 @@ def ajax_add_app(request):
     return HttpResponse(json.dumps(ret))
 
 
+################################
+from utils import pagination
+
+LIST = []
+for i in range(99):
+    LIST.append(i)
+
+
 def user_list(request):
     current_page = request.GET.get('p', 1)
     current_page = int(current_page)
 
-    val = request.COOKIES.get('per_page_count',10)
+    val = request.COOKIES.get('per_page_count', 10)
     val = int(val)
-    page_obj = pagination.Page(current_page,len(LIST),val)
+
+    page_obj = pagination.Page(current_page, len(LIST), val)
 
     data = LIST[page_obj.start:page_obj.end]
 
-    page_str = page_obj.page_str("/user_list/")
+    page_str = page_obj.page_str("/cmdb/user_list/")
 
-    return render(request, 'user_list.html', {'li': data,'page_str': page_str})
-
-
+    return render(request, 'user_list.html', {'li': data, 'page_str': page_str})
+###################################
 
 # def index(request):
 #

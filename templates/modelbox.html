@@ -44,11 +44,16 @@
             </table>
         </div>
         <div>
-            <select onchange="ChangePageSize()">
+            <select id="ps" onchange="changePageSize(this)">
                 <option value="10">10</option>
                 <option value="20">20</option>
                 <option value="30">30</option>
             </select>
+
+            <div class="pagination">
+                {{ page_str }}
+            </div>
+
         </div>
     </div>
     </div>
@@ -74,6 +79,7 @@
 
 
 
+
 {% endblock %}
 
 {% block script %}
@@ -82,12 +88,36 @@
             integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU="
             crossorigin="anonymous">
     </script>
-    
+
+
     <script>
-    function ChangePageSize() {
+        $(function () {
+            var v = $.cookie('per_page_count', {'path': "/cmdb/modelbox/`"});
+            $('#ps').val(v);
+        });
+
+        function changePageSize(ths) {
+            var v = $(ths).val();
+            console.log(v);
+            $.cookie('per_page_count', v, {'path': "/cmdb/modelbox/"});
+
+            location.reload();
+        }
+    </script>
+
+    <script>
+    function changeMenu(nid) {
+        var current_id = document.getElementById(nid);
+        var item_list = current_id.parentElement.parentElement.children;
+
+        for (var i = 0; i < item_list.length; i++) {
+            var current_item = item_list[i];
+            current_item.children[1].classList.add('hide')
+        }
+        current_id.nextElementSibling.classList.remove('hide')
 
     }
     </script>
-    
-    
+
+
 {% endblock %}
